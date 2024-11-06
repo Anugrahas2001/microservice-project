@@ -1,10 +1,10 @@
 const userRepository = require("../repository/userRepository");
 
-const createUser = async ({ name, email, password, experience,role }) => {
+const createUser = async ({ name, email, password, experience, role }) => {
   try {
     const existingUser = await userRepository.findUserByEmail(email);
-  
-    if (!existingUser == null) {
+
+    if (existingUser != null) {
       return null;
     }
     const newUser = await userRepository.createUser({
@@ -12,7 +12,7 @@ const createUser = async ({ name, email, password, experience,role }) => {
       email,
       password,
       experience,
-      role
+      role,
     });
 
     return newUser;
@@ -35,7 +35,6 @@ const login = async ({ email, password }) => {
 };
 
 const GetProductpayload = async ({ user }, event) => {
-
   const payload = {
     event: event,
     data: user,
@@ -49,21 +48,23 @@ const updateUserRole = async (data) => {
   try {
     const { user, role } = data;
     const userData = await userRepository.findUserById(user._id);
- 
+
     if (!userData) {
       return null;
     }
     userData.role = role._id;
 
-    const uData=await userData.save();
-    return uData;
+    const updatedUser = await userData.save();
+    console.log(updatedUser, "updated user");
+    return updatedUser;
   } catch (error) {
+    console.log(error, "error in service");
     throw new Error("unable to update the user role");
   }
 };
 
 const subscribeEvents = (payload) => {
- 
+  console.log(payload, "payloaaad");
   const { event, data } = payload;
   console.log(event, data, "event and data");
 
@@ -81,4 +82,5 @@ module.exports = {
   login,
   GetProductpayload,
   subscribeEvents,
+  updateUserRole,
 };
