@@ -16,7 +16,6 @@ module.exports = (app, channel) => {
           name,
           "ROLE_CREATION"
         );
-        console.log(payload, "inside the role controller");
         publishMessage(
           channel,
           PERMISSION_BINDING_KEY,

@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const roleRoutes = require("./api/route/roleRouter");
 
-module.exports = async (app, channel) => {
+module.exports.apps = async (app, channel) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true, limit: "1 mb" }));
   app.use(cors());

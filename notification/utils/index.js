@@ -35,7 +35,6 @@ module.exports.publishMessage = async (channel, binding_key, message) => {
 module.exports.subscribeMessage = async (channel, roleService) => {
   console.log("inside subscribe");
   const appQueue = await channel.assertQueue(QUEUE_NAME, { durable: true });
-  console.log(appQueue, "appqueue");
   await channel.bindQueue(appQueue.queue, EXCHANGE_NAME, ROLE_BINDING_KEY);
 
   channel.consume(appQueue.queue, (data) => {
