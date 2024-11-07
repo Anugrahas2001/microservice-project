@@ -4,8 +4,11 @@ const { publishMessage } = require("../utils");
 
 const createRole = async ({ name, description }) => {
   try {
+    const roleData = await roleRepository.findRoleByname(name);
+    if (roleData != null) {
+      return null;
+    }
     const role = await roleRepository.createRole({ name, description });
-    console.log(role, "in service");
     return role;
   } catch (error) {
     throw new Error("Unable to create role");
@@ -28,7 +31,7 @@ const addUserRole = async (user, channel) => {
     let role;
     if (user.experience === 0) {
       role = await roleRepository.findRoleByname("Fresher");
-    } else if (user.experience < 2) {
+    } else if (user.experience == 2) {
       role = await roleRepository.findRoleByname("Experienced");
     } else {
       role = await roleRepository.findRoleByname("Professional");
@@ -48,19 +51,17 @@ const addUserRole = async (user, channel) => {
       return role;
     }
   } catch (error) {
-    console.error("Error in addUserRole:", error.message);
     throw new Error("Unable to assign role to the user");
   }
 };
 
 const updateRolePermission = async (data) => {
   try {
-    console.log(data.role, "data received in updateRolePermission");
 
     const { _id, role, description } = data;
-    console.log(_id, "id", role, "name", description, "permission dataaa");
+
     const roles = await roleRepository.findRoleByname(role);
-    console.log(roles, "by finding");
+
     if (roles) {
       roles.permissions = description;
 

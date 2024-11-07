@@ -17,9 +17,12 @@ const createRole = async ({ name, description }) => {
 };
 
 const findRoleByname = async (roleName) => {
-  const role = await Role.findOne({ name: roleName });
-  console.log(role, "roleee");
-  return role;
+  try {
+    const role = await Role.findOne({ name: roleName });
+    return role;
+  } catch (error) {
+    throw new Error("unable to find role by name");
+  }
 };
 
 module.exports = {

@@ -64,6 +64,28 @@ describe("role controller", () => {
       );
     });
 
+    it("POST/api/role/create---role already present", async () => {
+      const roleData = { name: "fresher", description: "fresher jobs only" };
+      const event = "ROLE_CREATION";
+
+      roleService.createRole.mockResolvedValue(null);
+      roleService.GetProductpayload.mockReturnValue({
+        data: "fresher",
+        event: event,
+      });
+
+      const result = await request(app)
+        .post("/api/role/create")
+        .send(roleData)
+        .expect("Content-Type", /json/)
+        .expect(409);
+
+      expect(result.body).toEqual({
+        message: "Role already present in the database",
+      });
+      expect(publishMessage).not.toHaveBeenCalled();
+    });
+
     it("POST/api/role/create", async () => {
       const roleData = { name: "fresher", description: "fresher jobs" };
 

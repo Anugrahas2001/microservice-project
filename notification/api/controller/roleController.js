@@ -12,18 +12,24 @@ module.exports = (app, channel) => {
 
         const role = await roleService.createRole({ name, description });
 
+        if (!role) {
+          return res
+            .status(409)
+            .json({ message: "Role already present in the database" });
+        }
+
         const payload = await roleService.GetProductpayload(
           name,
           "ROLE_CREATION"
         );
-        publishMessage(
+        await publishMessage(
           channel,
           PERMISSION_BINDING_KEY,
           JSON.stringify(payload)
         );
         return res.status(201).json({ message: "Role created", role });
       } catch (error) {
-        console.error(error);
+        // console.log(error);
         return res.status(500).json({ message: "Unable to create a new role" });
       }
     },

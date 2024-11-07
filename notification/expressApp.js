@@ -8,7 +8,7 @@ module.exports.apps = async (app, channel) => {
   app.use(cors());
   app.use(express.static(__dirname + "/public"));
   app.use((req, res, next) => {
-    console.log(req);
+    // console.log(req);
     next();
   });
 
