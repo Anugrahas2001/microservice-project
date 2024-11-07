@@ -1,147 +1,3 @@
-// const User = require("../model/User"); // Import the User model
-// const userRepository = require("./path/to/your/userRepository"); // Adjust the path as necessary
-
-// // Mock the User model
-// jest.mock("../model/User");
-
-// describe("User Repository", () => {
-//   afterEach(() => {
-//     jest.clearAllMocks(); // Clear mocks after each test
-//   });
-
-//   describe("findUserByEmail", () => {
-//     it("should return a user if found", async () => {
-//       const mockUser = { name: "John Doe", email: "john@example.com" };
-//       User.findOne.mockResolvedValue(mockUser);
-
-//       const user = await userRepository.findUserByEmail("john@example.com");
-
-//       expect(User.findOne).toHaveBeenCalledWith({ email: "john@example.com" });
-//       expect(user).toEqual(mockUser);
-//     });
-
-//     it("should throw an error if there is an issue fetching the user", async () => {
-//       User.findOne.mockRejectedValue(new Error("Database error"));
-
-//       await expect(
-//         userRepository.findUserByEmail("john@example.com")
-//       ).rejects.toThrow("Error fetching user by email");
-//     });
-//   });
-
-//   describe("createUser", () => {
-//     it("should create and return a new user", async () => {
-//       const newUserData = {
-//         name: "Jane Doe",
-//         email: "jane@example.com",
-//         password: "password123",
-//         experience: 5,
-//         role: "User",
-//       };
-//       const mockSavedUser = { ...newUserData, _id: "12345" };
-//       User.mockImplementation(() => ({
-//         ...newUserData,
-//         save: jest.fn().mockResolvedValue(mockSavedUser),
-//       }));
-
-//       const user = await userRepository.createUser(newUserData);
-
-//       expect(User).toHaveBeenCalledWith(newUserData);
-//       expect(user).toEqual(mockSavedUser);
-//     });
-
-//     it("should throw an error if there is an issue creating the user", async () => {
-//       const newUserData = {
-//         name: "Jane Doe",
-//         email: "jane@example.com",
-//         password: "password123",
-//         experience: 5,
-//         role: "User",
-//       };
-//       User.mockImplementation(() => ({
-//         ...newUserData,
-//         save: jest.fn().mockRejectedValue(new Error("Failed to save user")),
-//       }));
-
-//       await expect(userRepository.createUser(newUserData)).rejects.toThrow(
-//         "Error creating user"
-//       );
-//     });
-//   });
-
-//   describe("findUserByEmailAndPassword", () => {
-//     it("should return a user if the email and password match", async () => {
-//       const mockUser = { email: "john@example.com", password: "password123" };
-//       User.findOne.mockResolvedValue(mockUser);
-
-//       const user = await userRepository.findUserByEmailAndPassword({
-//         email: "john@example.com",
-//         password: "password123",
-//       });
-
-//       expect(User.findOne).toHaveBeenCalledWith({ email: "john@example.com" });
-//       expect(user).toEqual(mockUser);
-//     });
-
-//     it("should return undefined if user is found but password does not match", async () => {
-//       const mockUser = { email: "john@example.com", password: "wrongpassword" };
-//       User.findOne.mockResolvedValue(mockUser);
-
-//       const user = await userRepository.findUserByEmailAndPassword({
-//         email: "john@example.com",
-//         password: "password123",
-//       });
-
-//       expect(User.findOne).toHaveBeenCalledWith({ email: "john@example.com" });
-//       expect(user).toBeUndefined();
-//     });
-
-//     it("should throw an error if there is an issue fetching the user", async () => {
-//       User.findOne.mockRejectedValue(new Error("Database error"));
-
-//       await expect(
-//         userRepository.findUserByEmailAndPassword({
-//           email: "john@example.com",
-//           password: "password123",
-//         })
-//       ).rejects.toThrow("not found");
-//     });
-//   });
-
-//   describe("findUserById", () => {
-//     it("should return a user if found by ID", async () => {
-//       const mockUser = { name: "John Doe", _id: "12345" };
-//       User.findById.mockResolvedValue(mockUser);
-
-//       const user = await userRepository.findUserById("12345");
-
-//       expect(User.findById).toHaveBeenCalledWith("12345");
-//       expect(user).toEqual(mockUser);
-//     });
-
-//     it("should throw an error if there is an issue fetching the user by ID", async () => {
-//       User.findById.mockRejectedValue(new Error("Database error"));
-
-//       await expect(userRepository.findUserById("12345")).rejects.toThrow(
-//         "failed to find the user by id"
-//       );
-//     });
-//   });
-
-//   describe("updateUser", () => {
-//     it("should update and return the user", async () => {
-//       const mockUser = {
-//         save: jest.fn().mockResolvedValue({ name: "Updated User" }),
-//       };
-
-//       const updatedUser = await userRepository.updateUser(mockUser);
-
-//       expect(mockUser.save).toHaveBeenCalled();
-//       expect(updatedUser).toEqual({ name: "Updated User" });
-//     });
-//   });
-// });
-
 const User = require("../model/User");
 const userRepository = require("../repository/userRepository");
 
@@ -152,20 +8,119 @@ describe("user repository", () => {
     jest.clearAllMocks();
   });
 
-  it("fetch user by email if present", async () => {
-    const user = {
-      email: "anugrahas@gmail.com",
-    };
+  describe("find user baed on email", () => {
+    it("fetch user by email if present", async () => {
+      const user = {
+        email: "anugrahas@gmail.com",
+      };
 
-    User.findOne.mockResolvedValue(user);
-    const result = await userRepository.findUserByEmail("anugrahas@gmail.com");
+      User.findOne.mockResolvedValue(user);
+      const result = await userRepository.findUserByEmail(user.email);
 
-    expect(User.findOne).toHaveBeenCalledWith(user);
-    expect(result).toEqual(user);
+      expect(User.findOne).toHaveBeenCalledWith(user);
+      expect(result).toEqual(user);
+    });
+
+    it("unable to fetch the user", async () => {
+      const user = { email: "anugrahas2001@gmail.com" };
+      User.findOne.mockRejectedValue(new Error("Error fetching user by email"));
+
+      expect(userRepository.findUserByEmail(user.email)).rejects.toThrow(
+        "Error fetching user by email"
+      );
+    });
+  });
+
+  describe("user creation", () => {
+    it("should create a user successfully", async () => {
+      const userData = {
+        name: "Anugraha",
+        email: "anu@gmail.com",
+        password: "anu@17",
+        experience: 7,
+        role: "role123",
+      };
+
+      userRepository.createUser = jest.fn().mockResolvedValue(userData);
+
+      const result = await userRepository.createUser(userData);
+      expect(userRepository.createUser).toHaveBeenCalledWith(userData);
+      expect(result).toEqual(userData);
+    });
+
+    it("unable to create user", async () => {
+      const userData = {
+        name: "Anugraha",
+        email: "anu@gmail.com",
+        password: "anu@17",
+        experience: 7,
+        role: "role123",
+      };
+
+      userRepository.createUser.mockRejectedValue(
+        new Error("Error creating user")
+      );
+
+      await expect(userRepository.createUser(userData)).rejects.toThrow(
+        "Error creating user"
+      );
+    });
+  });
+
+  describe("find user by email and password", () => {
+    it("fetch user based on the email and password", async () => {
+      const user = { email: "anu@gmail.com", password: "anu2123" };
+
+      User.findOne.mockResolvedValue(user);
+
+      const result = await userRepository.findUserByEmailAndPassword(user);
+
+      expect(User.findOne).toHaveBeenCalledWith({ email: "anu@gmail.com" });
+      expect(result).toEqual(user);
+    });
+
+    it("return null user if the password is not match", async () => {
+      const user = { email: "anu@gmail.com", password: "anu2123" };
+      User.findOne.mockResolvedValue(user);
+
+      const result = await userRepository.findUserByEmailAndPassword({
+        email: "anu@gmail.com",
+        password: "anu@3123",
+      });
+      expect(User.findOne).toHaveBeenCalledWith({ email: "anu@gmail.com" });
+      expect(result).toBeUndefined();
+    });
+
+    it("user not found", async () => {
+      const user = { email: "anu@gmail.com", password: "anu2123" };
+      User.findOne.mockRejectedValue(new Error("not found"));
+
+      expect(userRepository.findUserByEmailAndPassword(user)).rejects.toThrow(
+        "not found"
+      );
+    });
+  });
+
+  describe("finding user baed on userId", () => {
+    it("fetching user data if the user id is exist", async () => {
+      const user = { _id: "user123", name: "user", email: "user@gmail.com" };
+
+      User.findById.mockResolvedValue(user);
+      const result = await userRepository.findUserById(user._id);
+
+      expect(User.findById).toHaveBeenCalledWith(user._id);
+      expect(result).toEqual(user);
+    });
+
+    it("unable to find the user", async () => {
+      const user = { _id: "user123", name: "user", email: "user@gmail.com" };
+      User.findById.mockRejectedValue(
+        new Error("failed to find the user by id")
+      );
+
+      await expect(userRepository.findUserById(user._id)).rejects.toThrow(
+        "failed to find the user by id"
+      );
+    });
   });
 });
-
-
-// const user = {
-//     email: "anugrahas@gmail.com",
-//   }; here in this why we are only giving email? what happen if i included name, password,experience in this

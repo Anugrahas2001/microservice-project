@@ -53,7 +53,7 @@ describe("User Service", () => {
       expect(userRepository.findUserByEmail).toHaveBeenCalledWith(
         existingUser.email
       );
-      expect(result).toBeNull();
+      expect(result).toBeNull();  
     });
 
     it("unable to create user", async () => {
@@ -106,9 +106,9 @@ describe("User Service", () => {
     it("payload created successfully", async () => {
       const user = { user: "test user" };
       const event = "USER_CREATION";
-      const payloaData = await GetProductpayload({ user }, event);
+      const payloadData = await GetProductpayload({ user }, event);
 
-      expect(payloaData).toEqual({ event, data: user });
+      expect(payloadData).toEqual({ event, data: user });
     });
   });
 
