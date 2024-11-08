@@ -57,7 +57,6 @@ const addUserRole = async (user, channel) => {
 
 const updateRolePermission = async (data) => {
   try {
-
     const { _id, role, description } = data;
 
     const roles = await roleRepository.findRoleByname(role);
@@ -71,7 +70,6 @@ const updateRolePermission = async (data) => {
       throw new Error("Role not found");
     }
   } catch (error) {
-    console.error("Failed to update permission:", error.message);
     throw new Error("Failed to update permission");
   }
 };
@@ -97,4 +95,5 @@ module.exports = {
   subscribeEvents,
   addUserRole,
   GetProductpayload,
+  updateRolePermission,
 };

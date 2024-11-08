@@ -53,7 +53,7 @@ describe("User Service", () => {
       expect(userRepository.findUserByEmail).toHaveBeenCalledWith(
         existingUser.email
       );
-      expect(result).toBeNull();  
+      expect(result).toBeNull();
     });
 
     it("unable to create user", async () => {

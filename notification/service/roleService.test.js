@@ -6,8 +6,10 @@ const {
   createRole,
   GetProductpayload,
   addUserRole,
+  updateRolePermission,
   subscribeEvents,
 } = require("./roleService");
+const permission = require("../../permission/model/permission");
 
 jest.mock("../repository/roleRepository");
 jest.mock("../utils/index");
@@ -147,6 +149,84 @@ describe("role repository", () => {
         "Professional"
       );
       expect(publishMessage).not.toHaveBeenCalledWith();
+    });
+  });
+
+  describe("update the permission in role", () => {
+    it("should update user permission successfully", async () => {
+      const permissionData = {
+        _id: "permission123",
+        role: "fresher",
+        description: "fresher jobs only allowed to do",
+      };
+      const roleData = {
+        _id: "role123",
+        role: "fresher",
+        permissions: ["fresher jobs only"],
+        save: jest.fn().mockResolvedValue({
+          _id: "role123",
+          role: "fresher",
+          permissions: ["fresher jobs only allowed to do"],
+        }),
+      };
+      roleRepository.findRoleByname.mockResolvedValue(roleData);
+      const result = await updateRolePermission(permissionData);
+
+      expect(roleRepository.findRoleByname).toHaveBeenCalledWith("fresher");
+      expect(roleData.permissions).toBe("fresher jobs only allowed to do");
+      expect(result).toEqual({
+        _id: "role123",
+        role: "fresher",
+        permissions: ["fresher jobs only allowed to do"],
+      });
+    });
+
+    it("failed to update the permission", async () => {
+      const permissionData = {
+        _id: "permission123",
+        role: "fresher",
+        description: "fresher jobs only allowed to do",
+      };
+      const roleData = {
+        _id: "role123",
+        name: "fresher",
+        description: "fresher jobs only",
+        permissions: ["do only fresher jobs"],
+        save: jest.fn().mockResolvedValue({
+          _id: "role123",
+          name: "fresher",
+          description: "fresher jobs only",
+          permissions: ["fresher jobs only allowed to do"],
+        }),
+      };
+      roleRepository.findRoleByname.mockRejectedValue(
+        new Error("Failed to update permission")
+      );
+
+      expect(roleRepository.findRoleByname).toHaveBeenCalledWith("fresher");
+      await expect(updateRolePermission(roleData)).rejects.toThrow(
+        "Failed to update permission"
+      );
+    });
+
+    it("role not found", async () => {
+      const roleData = {
+        _id: "role123",
+        name: "fresher",
+        description: "fresher jobs only",
+        permissions: ["do only fresher jobs"],
+        save: jest.fn().mockResolvedValue({
+          _id: "role123",
+          name: "fresher",
+          description: "fresher jobs only",
+          permissions: ["fresher jobs only allowed to do"],
+        }),
+      };
+
+      roleRepository.findRoleByname.mockRejectedValue(
+        new Error("Role not found")
+      );
+      expect(roleRepository.findRoleByname).rejects.toThrow("Role not found");
     });
   });
 });
