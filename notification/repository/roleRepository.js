@@ -1,5 +1,4 @@
 const Role = require("../model/role");
-const mongoose = require("mongoose");
 
 const createRole = async ({ name, description }) => {
   try {
@@ -7,7 +6,7 @@ const createRole = async ({ name, description }) => {
       name,
       description,
     });
-    console.log(roleData, "role dattaa");
+
     const role = await roleData.save();
     console.log(role, "in repooo");
     return role;
