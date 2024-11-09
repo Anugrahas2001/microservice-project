@@ -15,7 +15,6 @@ describe("permission controller", () => {
   beforeAll(async () => {
     app = express();
 
-    // Set up the mock channel
     mockChannel = {
       assertQueue: jest.fn(),
       bindQueue: jest.fn(),
@@ -24,10 +23,8 @@ describe("permission controller", () => {
       ack: jest.fn(),
     };
 
-    // Mock createChannel to return the mock channel object
     createChannel.mockResolvedValue(mockChannel);
 
-    // Initialize app with the mock channel
     await apps(app, mockChannel);
   });
 

@@ -50,10 +50,6 @@ describe("permission service", () => {
       const permissionData = { role: "fresher" };
 
       permissionRepository.findPermission.mockResolvedValue(permissionData);
-      //   const GetProductpayload = jest.fn().mockResolvedValue({
-      //     data: permissionData,
-      //     event: "PERMISSION_CREATED",
-      //   });
 
       const result = await findPermission(permissionData, channel);
 
@@ -66,15 +62,43 @@ describe("permission service", () => {
       expect(permissionRepository.findPermission).toHaveBeenCalledWith(
         permissionData
       );
-      //   expect(GetProductpayload).toHaveBeenCalledWith(
-      //     permissionData,
-      //     "PERMISSION_CREATED"
-      //   );
+
       expect(publishMessage).toHaveBeenCalledWith(
         channel,
         ROLE_BINDING_KEY,
         expectedPayload
       );
+    });
+
+    it("should throw an error when permission is not found", async () => {
+      const role = "fresher";
+
+      permissionRepository.findPermission.mockResolvedValue(null);
+
+      await expect(findPermission(role)).rejects.toThrow(
+        "Permission not found"
+      );
+
+      expect(permissionRepository.findPermission).toHaveBeenCalledWith(role);
+      expect(publishMessage).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("get product payload", () => {
+    it("fetching payload data", async () => {
+      const permissionData = {
+        _id: "permission123",
+        role: "fresher",
+        description: "fresher works only",
+      };
+      const event = "PERMISSION_CREATED";
+
+      const result = await GetProductpayload(permissionData, event);
+
+      expect(result).toEqual({
+        event: "PERMISSION_CREATED",
+        data: permissionData,
+      });
     });
   });
 });

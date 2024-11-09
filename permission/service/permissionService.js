@@ -15,33 +15,29 @@ const GetProductpayload = async (data, event) => {
 
 const findPermission = async (data, channel) => {
   try {
-    console.log("Inside findPermission", data, channel, "channel dataa");
+    console.log("Inside findPermission", data, channel, "channel data");
 
     const permission = await permissionRepository.findPermission(data);
-    console.log(permission, "after finding permission");
     if (!permission) {
+      console.error("Permission not found", data);
       throw new Error("Permission not found");
     }
-
-    console.log(permission, "permission");
-
     const publishPermission = await GetProductpayload(
       permission,
       "PERMISSION_CREATED"
     );
-    console.log(publishPermission, "permission data");
 
-    // Await the message publication for better error handling
     await publishMessage(
       channel,
       ROLE_BINDING_KEY,
       JSON.stringify(publishPermission)
     );
+
+    console.log("Message successfully published");
+
     return permission;
-    console.log("Permission published successfully");
   } catch (error) {
-    console.error("Unable to create permission:", error.message);
-    throw new Error("Unable to create permission");
+    throw new Error("Unable to create permission: " + error.message);
   }
 };
 

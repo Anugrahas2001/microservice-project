@@ -14,7 +14,7 @@ const createPermission = async ({ role, description }) => {
 };
 
 const findPermission = async (role) => {
-  const permision = await Permission.findOne({ role });
+  const permision = await Permission.findOne(role);
   console.log(permision, "daataaa inside repoo");
   return permision;
 };
