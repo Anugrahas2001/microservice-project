@@ -37,6 +37,7 @@ const findPermission = async (data, channel) => {
       ROLE_BINDING_KEY,
       JSON.stringify(publishPermission)
     );
+    return permission;
     console.log("Permission published successfully");
   } catch (error) {
     console.error("Unable to create permission:", error.message);
