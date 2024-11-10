@@ -3,8 +3,7 @@ const permissionRepository = require("../repository/permissionRepository");
 const { publishMessage } = require("../utils");
 
 const GetProductpayload = async (data, event) => {
-  console.log(event, "event", data, "userr");
-
+  
   const payload = {
     event: event,
     data: data,
@@ -19,7 +18,6 @@ const findPermission = async (data, channel) => {
 
     const permission = await permissionRepository.findPermission(data);
     if (!permission) {
-      console.error("Permission not found", data);
       throw new Error("Permission not found");
     }
     const publishPermission = await GetProductpayload(
