@@ -8,7 +8,6 @@ module.exports = (app, channel) => {
     createPermission: async (req, res) => {
       try {
         const { role, description } = req.body;
-        // console.log(role, description, "user daata");
         const permisionData = await permissionService.createPermission({
           role,
           description,

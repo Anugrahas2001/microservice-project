@@ -3,20 +3,19 @@ const permissionRepository = require("../repository/permissionRepository");
 const { publishMessage } = require("../utils");
 
 const GetProductpayload = async (data, event) => {
-  
   const payload = {
     event: event,
     data: data,
   };
-  console.log(payload, "from service payload");
+
   return payload;
 };
 
 const findPermission = async (data, channel) => {
   try {
-    console.log("Inside findPermission", data, channel, "channel data");
 
     const permission = await permissionRepository.findPermission(data);
+
     if (!permission) {
       throw new Error("Permission not found");
     }
@@ -41,7 +40,7 @@ const findPermission = async (data, channel) => {
 
 const createPermission = async ({ role, description }) => {
   try {
-    console.log(role, description, "permission dataa");
+
     const permission = await permissionRepository.createPermission({
       role,
       description,

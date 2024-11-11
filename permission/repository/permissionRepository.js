@@ -11,19 +11,9 @@ const createPermission = async ({ role, description }) => {
   }
 };
 
-// const findPermission = async (role) => {
-//   try {
-//     console.log(`Calling findOne with { role: ${role} }`);
-//     const permission = await Permission.findOne({ role });
-//     return permission;
-//   } catch (error) {
-//     throw new Error("permission not found");
-//   }
-// };
-
 const findPermission = async (role) => {
   try {
-    console.log(`Calling findOne with { role: ${role} }`);
+
     const permission = await Permission.findOne({ role });
 
     if (!permission) {
@@ -32,7 +22,6 @@ const findPermission = async (role) => {
 
     return permission;
   } catch (error) {
-    // console.error(`Error finding permission: ${error.message}`);
     throw new Error("permission not found");
   }
 };

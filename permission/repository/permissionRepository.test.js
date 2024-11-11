@@ -44,7 +44,6 @@ describe("permission repository", () => {
     });
   });
 
-
   // describe("find permission by role", () => {
   //   afterEach(() => {
   //     jest.clearAllMocks();
@@ -52,7 +51,7 @@ describe("permission repository", () => {
 
   //   it("should return the permission when found", async () => {
   //     const role = "fresher";
-  //     const permissionData = { role, permissions: "write" };
+  //     const permissionData = { role: "fresher", permissions: "write" };
 
   //     Permission.findOne.mockResolvedValue(permissionData);
   //     const result = await findPermission(role);
@@ -60,7 +59,6 @@ describe("permission repository", () => {
   //     expect(Permission.findOne).toHaveBeenCalledWith({ role });
   //     expect(result).toEqual(permissionData);
   //   });
-
   //   it("should return null when permission is not found", async () => {
   //     const role = "admin";
 
