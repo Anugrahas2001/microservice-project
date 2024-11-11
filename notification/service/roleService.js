@@ -5,10 +5,12 @@ const { publishMessage } = require("../utils");
 const createRole = async ({ name, description }) => {
   try {
     const roleData = await roleRepository.findRoleByname(name);
+    console.log(roleData, "in service");
     if (roleData != null) {
       return null;
     }
     const role = await roleRepository.createRole({ name, description });
+    console.log(role, "result service");
     return role;
   } catch (error) {
     throw new Error("Unable to create role");

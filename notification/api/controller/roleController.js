@@ -9,8 +9,10 @@ module.exports = (app, channel) => {
     createRole: async (req, res) => {
       try {
         const { name, description } = req.body;
+        console.log(name, description, "controller");
 
         const role = await roleService.createRole({ name, description });
+        console.log(role, "role controller");
 
         if (!role) {
           return res
