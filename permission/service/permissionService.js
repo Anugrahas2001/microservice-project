@@ -55,13 +55,6 @@ const subscribeEvents = (payload, channel) => {
     console.error("Channel is not initialized for subscription events.");
     return;
   }
-
-  console.log(
-    payload,
-    "payload in subscribe events",
-    channel,
-    "channel in subscribe events"
-  );
   const { event, data } = payload;
   console.log(event, data, "event and data");
 
